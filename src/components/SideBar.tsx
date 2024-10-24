@@ -5,7 +5,10 @@ type SideBarProps = {
   selectedCategory: string;
   setSelectedCategory: (category: string) => void;
 };
-const SideBar = ({ selectedCategory, setSelectedCategory }: SideBarProps) => {
+const SideBar: React.FC<SideBarProps> = ({
+  selectedCategory,
+  setSelectedCategory,
+}: SideBarProps) => {
   return (
     <Stack
       direction="row"

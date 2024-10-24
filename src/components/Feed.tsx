@@ -3,29 +3,17 @@ import { Box, Stack, Typography } from "@mui/material";
 import { SideBar, Videos } from "./";
 import { fetchFromAPI } from "../utils/fetchFromAPI";
 
-const Feed = () => {
+const Feed: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("New");
 
   const [videos, setVideos] = useState<[]>([]);
 
-  // useEffect(() => {
-  //   const fetchVideos = async () => {
-  //     try {
-  //       const data = await fetchFromAPI(
-  //         `search?part=snippet&q=${selectedCategory}`
-  //       );
-  //       setVideos(data.items); // Ensure data.items is the correct path
-  //     } catch (error) {
-  //       console.error("Error fetching videos:", error);
-  //     }
-  //   };
-
-  //   fetchVideos();
-  // }, [selectedCategory]);
   useEffect(() => {
-    fetchFromAPI(`search?part=snippet&q=${selectedCategory}`).then((data) => {
-      setVideos(data.items);
-    });
+    fetchFromAPI(`search?part=snippet&q=${selectedCategory}`).then(
+      (data: object) => {
+        setVideos(data.items);
+      }
+    );
   }, [selectedCategory]);
   return (
     <Stack sx={{ flexDirection: { sx: "column", md: "row" } }}>

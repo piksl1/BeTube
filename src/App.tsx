@@ -8,7 +8,7 @@ import {
   VideoDetail,
 } from "./components";
 
-const App = () => {
+const App: React.FC = () => {
   return (
     <BrowserRouter>
       <Box sx={{ backgroundColor: "#1a1c1c" }}>
