@@ -1,19 +1,6 @@
 import { Box, Stack } from "@mui/material";
 import VideoCard from "./VideoCard";
-
-interface Video {
-  id: {
-    videoId: string;
-  };
-  snippet: {
-    title: string;
-    thumbnails: {
-      high: {
-        url: string;
-      };
-    };
-  };
-}
+import { Video } from "../utils/types";
 
 interface VideosProps {
   videos: Video[]; // Specified type for videos prop

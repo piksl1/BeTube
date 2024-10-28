@@ -4,6 +4,7 @@ import { fetchFromAPI } from "../utils/fetchFromAPI";
 import { Box } from "@mui/material";
 import ChannelCard from "./ChannelCard";
 import Videos from "./Videos";
+import { Video } from "../utils/types";
 
 export interface Channel {
   id?: {
@@ -22,18 +23,6 @@ export interface Channel {
   };
 }
 
-interface Video {
-  // Define the structure of a video
-  id: {
-    videoId: string;
-  };
-  snippet: {
-    title: string;
-    description: string;
-    // Add other fields as necessary
-  };
-}
-
 const ChannelDetail: React.FC = () => {
   const [channelDetail, setChannelDetail] = useState<Channel | null>(null);
   const [videos, setVideos] = useState<Video[]>([]);
@@ -41,13 +30,14 @@ const ChannelDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
 
   console.log(channelDetail, videos);
-
   useEffect(() => {
-    fetchFromAPI(`channels?part=snippet&id=${id}`).then((data) => {
-      setChannelDetail(data?.items[0]);
-    });
+    fetchFromAPI(`channels?part=snippet&id=${id}`).then(
+      (data: { items: Channel[] }) => {
+        setChannelDetail(data?.items[0]);
+      }
+    );
     fetchFromAPI(`search?channelId=${id}&part=snippet&order=date`).then(
-      (data) => {
+      (data: { items: Video[] }) => {
         setVideos(data?.items);
       }
     );

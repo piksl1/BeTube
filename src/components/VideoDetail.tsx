@@ -5,13 +5,9 @@ import { Link, useParams } from "react-router-dom";
 import { fetchFromAPI } from "../utils/fetchFromAPI";
 import { CheckCircle } from "@mui/icons-material";
 import Videos from "./Videos";
+import { Video } from "../utils/types";
 
-interface VideoDetail {
-  snippet: {
-    title: string;
-    channelId: string;
-    channelTitle: string;
-  };
+interface VideoDetail extends Video {
   statistics: {
     viewCount: string;
     likeCount: string;
@@ -21,18 +17,33 @@ interface VideoDetail {
 const VideoDetail: React.FC = () => {
   // Added type annotation for functional component
   const [videoDetail, setVideoDetail] = useState<VideoDetail | null>(null); // Specified type for useState
-  const [videos, setVideos] = useState<any[]>(null); // Specified type for videos state
+  const [videos, setVideos] = useState<Video[]>(null); // Specified type for videos state
   const { id } = useParams<{ id: string }>(); // Added type annotation for useParams
 
   useEffect(() => {
-    fetchFromAPI(`videos?part=snippet,statistics&id=${id}`).then((data) => {
-      setVideoDetail(data.items[0]);
-    });
+    fetchFromAPI(`videos?part=snippet,statistics&id=${id}`).then(
+      (data: { items: VideoDetail[] }) => {
+        setVideoDetail(data.items[0]);
+        // Update the document title with the video title
+        const videoTitle = data.items[0]?.snippet?.title;
+        if (videoTitle) {
+          console.log("Updating document title to:", videoTitle);
+          document.title = videoTitle;
+        } else {
+          console.log("Video title not found, using default");
+          document.title = "BeTube";
+        }
+      }
+    );
     fetchFromAPI(`search?part=snippet&relatedToVideoId=${id}&type=video`).then(
-      (data) => {
+      (data: { items: Video[] }) => {
         setVideos(data.items);
       }
     );
+    // Cleanup function
+    return () => {
+      document.title = "BeTube";
+    };
   }, [id]);
 
   if (!videoDetail?.snippet) return "Loading...";
@@ -64,8 +75,12 @@ const VideoDetail: React.FC = () => {
             >
               <Link to={`/channel/${channelId}`}>
                 <Typography
-                  variant={{ sm: "subtitle1", md: "h6" }}
+                  variant="h6" // Changed to a single variant
                   color="#fff"
+                  sx={{
+                    // Added responsive styles using sx
+                    fontSize: { sm: "subtitle1", md: "h6" },
+                  }}
                 >
                   {channelTitle}
                   <CheckCircle

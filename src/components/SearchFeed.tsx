@@ -3,16 +3,19 @@ import { Box, Typography } from "@mui/material";
 import { Videos } from "./";
 import { fetchFromAPI } from "../utils/fetchFromAPI";
 import { useParams } from "react-router-dom";
+import { Video } from "../utils/types";
 
 const SearchFeed = () => {
-  const [videos, setVideos] = useState<[]>([]);
+  const [videos, setVideos] = useState<Video[]>([]);
 
-  const { searchTerm } = useParams();
+  const { searchTerm } = useParams<{ searchTerm: string }>();
 
   useEffect(() => {
-    fetchFromAPI(`search?part=snippet&q=${searchTerm}`).then((data: object) => {
-      setVideos(data.items);
-    });
+    fetchFromAPI(`search?part=snippet&q=${searchTerm}`).then(
+      (data: { items: Video[] }) => {
+        setVideos(data.items);
+      }
+    );
   }, [searchTerm]);
   return (
     <Box p={2} sx={{ overflowY: "auto", height: "90vh", flex: 2 }}>

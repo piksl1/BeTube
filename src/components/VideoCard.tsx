@@ -7,23 +7,10 @@ import {
   demoVideoUrl,
 } from "../utils/constants";
 import { CheckCircle } from "@mui/icons-material";
+import { Video } from "../utils/types";
 
 interface VideoCardProps {
-  video: {
-    id: {
-      videoId: string;
-    };
-    snippet: {
-      title: string;
-      channelId?: string;
-      channelTitle?: string;
-      thumbnails?: {
-        high?: {
-          url: string;
-        };
-      };
-    };
-  };
+  video: Video;
 }
 
 const VideoCard: React.FC<VideoCardProps> = ({

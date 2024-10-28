@@ -2,15 +2,16 @@ import { useEffect, useState } from "react";
 import { Box, Stack, Typography } from "@mui/material";
 import { SideBar, Videos } from "./";
 import { fetchFromAPI } from "../utils/fetchFromAPI";
+import { Video } from "../utils/types";
 
 const Feed: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("New");
 
-  const [videos, setVideos] = useState<[]>([]);
+  const [videos, setVideos] = useState<Video[]>([]);
 
   useEffect(() => {
     fetchFromAPI(`search?part=snippet&q=${selectedCategory}`).then(
-      (data: object) => {
+      (data: { items: Video[] }) => {
         setVideos(data.items);
       }
     );

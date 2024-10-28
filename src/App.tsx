@@ -11,14 +11,31 @@ import {
 const App: React.FC = () => {
   return (
     <BrowserRouter>
-      <Box sx={{ backgroundColor: "#1a1c1c" }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          minHeight: "100vh",
+          backgroundColor: "#1a1c1c",
+        }}
+      >
         <Navbar />
-        <Routes>
-          <Route path="/" element={<Feed />} />
-          <Route path="/video/:id" element={<VideoDetail />} />
-          <Route path="/channel/:id" element={<ChannelDetail />} />
-          <Route path="/search/:searchTerm" element={<SearchFeed />} />
-        </Routes>
+        <Box
+          component="main"
+          sx={{
+            flexGrow: 1,
+            overflow: "auto",
+            position: "relative",
+            height: "calc(100vh - 64px)", // Adjust this value based on your Navbar height
+          }}
+        >
+          <Routes>
+            <Route path="/" element={<Feed />} />
+            <Route path="/video/:id" element={<VideoDetail />} />
+            <Route path="/channel/:id" element={<ChannelDetail />} />
+            <Route path="/search/:searchTerm" element={<SearchFeed />} />
+          </Routes>
+        </Box>
       </Box>
     </BrowserRouter>
   );
